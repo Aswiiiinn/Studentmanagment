@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .action-btn {
+            width: 180px;
+            height: 100px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff; /* Blue color */
+            color: #fff; /* White text */
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action = "{% url 'teacherapp:choose' %}">
+        {% csrf_token %}
+        <button type="submit" class="action-btn" name="action" value="Add_Course_Material">Add Course Material</button><br>
+        <button type="submit" class="action-btn" name="action" value="Add_Mark">Add Mark</button><br>
+        <button type="submit" class="action-btn" name="action" value="Add_Assignment">Add Assignment</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 12px; /* Reduced padding for shorter buttons */
+            margin: 10px;
+            cursor: pointer;
+            display: block;
+            width: calc(100% - 30px); /* Adjusted width to accommodate reduced padding and margin */
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .login-section, .registration-section {
+            margin-bottom: 30px;
+        }
+        .login-section h2, .registration-section h2 {
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Our Application</h1>
+        
+        <!-- Login Section -->
+        <div class="login-section">
+            <h2>Login</h2>
+            <a href="{% url 'admin_login' %}" class="btn">Admin Login</a>
+            <a href="{% url 'teacher_login' %}" class="btn">Teacher Login</a>
+            <a href="{% url 'student_login' %}" class="btn">Student Login</a>
+        </div>
+
+        <!-- Registration Section -->
+        <div class="registration-section">
+            <h2>Registration</h2>
+            <a href="{% url 'RedirecttoRegistratio' %}" class="btn">Registration</a>
+        </div>
+    </div>
+</body>
+</html>
