@@ -12,4 +12,5 @@ urlpatterns = [
     path('addMeterial/',addMeterial.as_view(), name = 'addMeterial'),
     path('meterialview/',meterialview.as_view(), name = 'meterial_view'),
     path('deleteview/<int:pk>',deleteview.as_view(), name = 'deleteview'),
-]
+    path('exceldownload/',exceldownload.as_view(), name = 'exceldownload'),
+    path('ExportToExcelView/',ExportToExcelView.as_view(), name = 'ExportToExcelView'),]

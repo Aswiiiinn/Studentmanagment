@@ -24,9 +24,8 @@ class BatchForm(forms.ModelForm):
     class Meta:
         model = Batch
         fields = '__all__'
+class importForm(forms.Form):
+    file = forms.FileField()
+    
+    
         
-        
-class importexportForm(forms.ModelForm):
-    class Meta:
-        model = importex
-        fields = '__all__'

@@ -59,4 +59,42 @@ class importex(models.Model):
     Student_Name = models.CharField(max_length=100)
     Exam_Name = models.CharField(max_length=150)
     Date = models.CharField(max_length=250)
-    Points = models.CharField(max_length=100,null=True,default=None)
+    Point = models.CharField(max_length=100,null=True,default=None)
+class Achivments(models.Model): 
+    out = "outstanding"
+    vG = "veryGood"
+    go ="good"
+    av = "average"
+    ba ="bad"
+    pr ="veryBad"
+    class_perfomancechoise = (
+        (out,"OutStanding"),
+        (vG,"VeryGood"),
+        (go,"Good"),
+        (av,"Average"),
+        (ba,"Bad"),
+        (pr,"VeryBad"),
+)
+    S ="S"
+    A1 ="A+"
+    A2 ="A"
+    B1 ="B+"
+    B2 ="B"
+    C1 ="C+"
+    C2 ="C"
+    F = "F"
+    GradeChoices = (
+        (S,"S"),
+        (A1,"A+"),
+        (A2,"A"),
+        (B1,"B+"),
+        (B2,"B"),
+        (C1,"C+"),
+        (C2,"C"),
+        (F,"F"),
+ )
+    name = models.ForeignKey(Student,on_delete=models.CASCADE)
+    score = models.IntegerField(null=True,)
+    Grade  = models.CharField(max_length=15,choices=GradeChoices)
+    class_perfomance = models.CharField(max_length=20,choices=class_perfomancechoise)
+    
