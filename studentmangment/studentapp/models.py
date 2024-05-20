@@ -73,8 +73,7 @@ class Achivments(models.Model):
         (go,"Good"),
         (av,"Average"),
         (ba,"Bad"),
-        (pr,"VeryBad"),
-)
+        (pr,"VeryBad"),)
     S ="S"
     A1 ="A+"
     A2 ="A"
@@ -91,8 +90,7 @@ class Achivments(models.Model):
         (B2,"B"),
         (C1,"C+"),
         (C2,"C"),
-        (F,"F"),
- )
+        (F,"F"),)
     name = models.ForeignKey(Student,on_delete=models.CASCADE)
     score = models.IntegerField(null=True,)
     Grade  = models.CharField(max_length=15,choices=GradeChoices)

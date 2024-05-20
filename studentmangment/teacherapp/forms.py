@@ -8,5 +8,5 @@ class courseForm(forms.ModelForm):
         fields = '__all__'
 class achivmentForm(forms.ModelForm):
     class Meta:
-        modles = Achivments
-        fields = ['','score']
+        model = Achivments
+        fields = ['name','score']

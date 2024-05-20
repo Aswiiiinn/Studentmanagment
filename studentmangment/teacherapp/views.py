@@ -1,6 +1,5 @@
-from locale import ABDAY_1
+
 import random
-from re import S
 import string
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
@@ -160,13 +159,12 @@ class ExportToExcelView(View):
 class Scoredetailsview(View):
     def get(self, request):
         item = Achivments.objects.all()
-        form = achivmentForm()
-        return render(request,'achivements.html',{'form':form,'item':item})
+        return render(request,'achivements.html',{'item':item})
 
 class Scoredetailsviewadd(View):
     def get(self,request):
         form = achivmentForm()
-        return render(request,'achivements.html',{'form':form})
+        return render(request,'addchivements.html',{'form':form})
     def post(self,request):
         form = achivmentForm(request.POST)
         if form.is_valid():
@@ -174,33 +172,36 @@ class Scoredetailsviewadd(View):
             score = int(request.POST.get('score'))
             if score >= 90:
                 achivment_instance.Grade = 'S'
-                achivment_instance.class_perfomance ='out'
+                achivment_instance.class_perfomance ='OutStanding'
             elif score >=80 and score<90:
-                achivment_instance.Grade = 'A1'
-                achivment_instance.class_perfomance ='out'
+                achivment_instance.Grade = 'A+'
+                achivment_instance.class_perfomance ='OutStanding'
             elif score >=70 and score<80:
-                achivment_instance.Grade = 'A2'
-                achivment_instance.class_perfomance ='vG'
+                achivment_instance.Grade = 'A'
+                achivment_instance.class_perfomance ='VeryGood'
             elif score >=60 and score<70:
-                achivment_instance.Grade = 'B1'
-                achivment_instance.class_perfomance ='go'
+                achivment_instance.Grade = 'B+'
+                achivment_instance.class_perfomance ='Good'
 
             elif score >=50 and score<60:
-                achivment_instance.Grade = 'B2'
-                achivment_instance.class_perfomance ='av'
+                achivment_instance.Grade = 'B'
+                achivment_instance.class_perfomance ='Average'
                 
             elif score >=40 and score<50:
-                achivment_instance.Grade = 'C1'
-                achivment_instance.class_perfomance ='ba'
+                achivment_instance.Grade = 'C+'
+                achivment_instance.class_perfomance ='Bad'
                 
             elif score >=30 and score<40:
                 achivment_instance.Grade = 'C2'
                 achivment_instance.class_perfomance ='pr'
             else:
                 achivment_instance.Grade = 'F'
-                achivment_instance.class_perfomance ='pr'
+                achivment_instance.class_perfomance ='VeryBad'
         
             achivment_instance.save()
-        return redirect('Scoredetailsview')        
-                      
-        
+        return redirect('teacherapp:Scoredetailsview')        
+class updatemark(View):
+    def get(self, request,pk):
+        item = Achivments.objects.get(id=pk)
+        form = achivmentForm(instance=item)
+        return render(request,'updatemark.html',{'form':form})
