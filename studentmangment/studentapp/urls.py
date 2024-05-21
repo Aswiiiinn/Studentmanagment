@@ -15,6 +15,7 @@ urlpatterns = [
     path('otp_email/',otp_email.as_view(), name = 'otp_email'),
     path('otp_varification/',otp_verification.as_view(), name = 'otp_varification'),
     
+    
 
 
 ]

@@ -16,4 +16,8 @@ urlpatterns = [
     path('ExportToExcelView/',ExportToExcelView.as_view(), name = 'ExportToExcelView'),
     path('Scoredetailsview/',Scoredetailsview.as_view(), name = 'Scoredetailsview'),
     path('Scoredetailsviewadd/',Scoredetailsviewadd.as_view(), name = 'Scoredetailsviewadd'),
+    path('updatemark<int:pk>/',updatemark.as_view(), name = 'updatemark'),
+    path('deleteviewscore<int:pk>/',deleteviewscore.as_view(), name = 'deleteviewscore'),
+    path('attandenceview/',attandenceview.as_view(), name = 'attandenceview'),
+    path('attandencelistview/',attandencelistview.as_view(), name = 'attandencelistview'),
 ]

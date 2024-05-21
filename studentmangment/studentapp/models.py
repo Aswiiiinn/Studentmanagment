@@ -68,12 +68,12 @@ class Achivments(models.Model):
     ba ="bad"
     pr ="veryBad"
     class_perfomancechoise = (
-        (out,"OutStanding"),
-        (vG,"VeryGood"),
-        (go,"Good"),
-        (av,"Average"),
-        (ba,"Bad"),
-        (pr,"VeryBad"),)
+        (out,"outstanding"),
+        (vG,"veryGood"),
+        (go,"good"),
+        (av,"average"),
+        (ba,"bad"),
+        (pr,"veryBad"),)
     S ="S"
     A1 ="A+"
     A2 ="A"
@@ -94,5 +94,9 @@ class Achivments(models.Model):
     name = models.ForeignKey(Student,on_delete=models.CASCADE)
     score = models.IntegerField(null=True,)
     Grade  = models.CharField(max_length=15,choices=GradeChoices)
-    class_perfomance = models.CharField(max_length=20,choices=class_perfomancechoise)
+    class_perfomance = models.CharField(max_length=20,choices= class_perfomancechoise)
+class attandence(models.Model):
+    teacher_id = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    date = models.DateField()
+    present = models.BooleanField(default=False)
     

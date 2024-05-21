@@ -8,5 +8,6 @@ admin.site.register(Batch)
 admin.site.register(Teacher)
 admin.site.register(Student)
 admin.site.register(Achivments)
+admin.site.register(attandence)
 admin.site.register(importex,ImportExportModelAdmin)
 

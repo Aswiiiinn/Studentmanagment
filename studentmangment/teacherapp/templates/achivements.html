@@ -5,24 +5,63 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
+            text-align: center;
         }
         th {
             background-color: #f2f2f2;
-            text-align: left;
+        }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 2px;
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            text-decoration: none;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .btn-update {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-delete {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-add {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #28a745;
+            border-color: #28a745;
+            text-decoration: none;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
+    <h2>Achievements</h2>
     <table>
         <thead>
             <tr>
@@ -30,6 +69,7 @@
                 <th>Score</th>
                 <th>Grade</th>
                 <th>Class Performance</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -39,10 +79,14 @@
                 <td>{{ item.score }}</td>
                 <td>{{ item.Grade }}</td>
                 <td>{{ item.class_perfomance }}</td>
+                <td>
+                    <a href="{% url 'teacherapp:updatemark' item.pk %}" class="btn btn-update">Update Score</a>
+                    <a href="{% url 'teacherapp:deleteviewscore' item.pk %}" class="btn btn-delete">Delete Score</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'teacherapp:Scoredetailsviewadd' %}">Add Score</a>
+    <a href="{% url 'teacherapp:Scoredetailsviewadd' %}" class="btn-add">Add Score</a>
 </body>
 </html>

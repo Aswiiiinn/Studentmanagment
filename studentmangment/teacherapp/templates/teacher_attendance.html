@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Attendance</title>
+</head>
+<body>
+    <h1>Teacher Attendance</h1>
+    <ul>
+        {% for teacher in teachers %}
+            <li>
+                {{ teacher.name }}
+                <a href="{% url 'teacherapp:add_teacher_attendance' teacher.id %}">Mark Attendance</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
