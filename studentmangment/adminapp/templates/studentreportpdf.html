@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <form method='post' action="{% url 'adminapp:createstudentreportpdf' %}">
+        {% csrf_token %}
+        <label for="start_date">Student_name</label>
+        <input type="text" id="Student_name" name="Student_name">
+}
+    
+        <button type="submit">SUBMIT</button>
+    </form>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Branch Name</th>
+                    <th>Course</th>
+                    <th>Mark</th>
+                    <th>download</th>
+
+                </tr>
+                {% for student in student_name %}
+                <tr>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.batch }}</td>
+                    <td>{{ student.course }}</td>
+                    <td>{{ student.score }}</td>
+                    <td>
+                        <a href="{% url 'adminapp:pdfgen' %}">Download</a>
+                    </td
+                    
+</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {</body>
+</html>

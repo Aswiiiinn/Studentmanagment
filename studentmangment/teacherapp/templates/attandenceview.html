@@ -13,6 +13,13 @@
                 <th>Teacher</th>
                 <th>Date</th>
                 <th>Present</th>
+                <th>arrival_time</th>
+                <th>break_start</th>
+                <th>break_end</th>
+                <th>departure_time</th>
+                <th>update</th>
+                <td>delete</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -21,6 +28,14 @@
                 <td>{{ record.teacher_id}}</td>
                 <td>{{ record.date }}</td>
                 <td>{{ record.present }}</td>
+                <td>{{ record.arrival_time}}</td>
+                <td>{{ record.break_start }}</td>
+                <td>{{ record.break_end }}</td>
+                <td>{{ record.departure_time }}</td>
+                <td>{{ record.get_totalworkinghours }}</td>
+                <td>{{ record.total_breaking_hours }}</td>
+                <td><a href="{% url 'teacherapp:updateattandenceview' record.pk %}">update</a></td>
+                <th><a href="{% url 'teacherapp:delete_attandenceview' record.pk %}">delete</a></td>
             </tr>
             {% endfor %}
         </tbody>

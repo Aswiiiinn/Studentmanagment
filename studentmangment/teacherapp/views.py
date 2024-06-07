@@ -264,11 +264,34 @@ class attandenceview(View):
         if form.is_valid():
             teacher_id = form.cleaned_data['teacher_id']
             present = form.cleaned_data['present']
+            arrival_time = form.cleaned_data['arrival_time']
+            break_start = form.cleaned_data['break_start']
+            break_end= form.cleaned_data['break_end']
+            departure_time = form.cleaned_data['departure_time']
+             
             attanjdence_date = date.today()
-            attandence.objects.create(teacher_id=teacher_id,present=present,date=attanjdence_date)
+            attandence1.objects.create(teacher_id=teacher_id,present=present,date=attanjdence_date,arrival_time =arrival_time, break_start=break_start,break_end=break_end, departure_time= departure_time)
             return redirect('teacherapp:attandencelistview')
         return render(request,'updateattandence.html',{'form':form})
 class attandencelistview(View):
     def get(self,request):
-        item = attandence.objects.all()
+        item = attandence1.objects.all()
         return render(request,'attandenceview.html',{'item':item})
+class updateattandenceview(View):
+    def get (self,request,pk):
+        item = attandence1.objects.get(id=pk)
+        form =attandenceForm(instance = item)
+        return render(request,'updateattandence.html',{'form':form})
+    def post(self,request,pk):
+        item = attandence1.objects.get(id=pk)
+        form = attandenceForm(request.POST,instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('teacherapp:attandencelistview')
+        return render(request,'updateattandence.html',{'form':form})
+class delete_attandenceview(View):
+    def get(self,request,pk):
+        item = attandence1.objects.get(id=pk)
+        item.delete()
+        return redirect('teacherapp:attandenceview')
+        

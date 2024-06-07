@@ -96,6 +96,9 @@
                     <td>
                         <a href="{% url 'adminapp:update_student' student.pk %}">Update</a>
                         <a href="{% url 'adminapp:delete_student' student.pk %}">Delete</a>
+                        <a href="{% url 'adminapp:coursecomplitionreportpdf' student.pk %}">Report Card</a>
+                        
+
                     </td>
                 </tr>
                 {% endfor %}

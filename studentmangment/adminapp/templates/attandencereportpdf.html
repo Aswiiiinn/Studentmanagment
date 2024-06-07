@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <form method='post' action="{% url 'adminapp:createattandencereportpdf' %}">
+    {% csrf_token %}
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date">
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date">
+    <input type="text"  name ="teacher_name">teacher name
+          {% for teacher in teachers_id%}
+               {{ teacher.name }}
+        
+          {% endfor %}
+
+    <button type="submit">SUBMIT</button>
+</form>
+{% if attendance %}
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Teacher Name</th>
+                <th>Arrival Time</th>
+                <th>Departure Time</th>
+                <th>Break Start Time</th>
+                <th>Break End Time</th>
+                <th>Total Working Hours</th>
+                <th>Break Time</th>
+            </tr>
+            {% for attendance in attendance %}
+            <tr>
+                <td>{{ attendance.date }}</td>
+                <td>{{ attendance.teacher_id }}</td>
+                <td>{{ attendance.arrival_time }}</td>
+                <td>{{ attendance.departure_time }}</td>
+                <td>{{ attendance.break_start }}</td>
+                <td>{{ attendance.break_end }}</td>
+                <td>{{ attendance.total_breaking_hours }}</td>
+                <td>{{ attendance.get_totalworkinghours }}</td>
+            </tr>
+            {% endfor %}
+
+            <a href="{% url 'adminapp:pdfgenstudentreportpdf'%}">DOwnloAD as pdf </a>
+        </table>
+        {% endif %}
+</body>
+</html>

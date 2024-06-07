@@ -20,4 +20,7 @@ urlpatterns = [
     path('deleteviewscore<int:pk>/',deleteviewscore.as_view(), name = 'deleteviewscore'),
     path('attandenceview/',attandenceview.as_view(), name = 'attandenceview'),
     path('attandencelistview/',attandencelistview.as_view(), name = 'attandencelistview'),
+    path('updateattandenceview/<int:pk>',updateattandenceview.as_view(), name = 'updateattandenceview'),
+    path('delete_attandenceview/<int:pk>',delete_attandenceview.as_view(), name = 'delete_attandenceview'),
+    
 ]

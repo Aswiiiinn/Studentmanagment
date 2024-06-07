@@ -1,3 +1,4 @@
+from datetime import datetime
 from email.policy import default
 from re import T
 from django.db import models
@@ -6,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.http import HttpResponse
 
 class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
@@ -95,8 +97,35 @@ class Achivments(models.Model):
     score = models.IntegerField(null=True,)
     Grade  = models.CharField(max_length=15,choices=GradeChoices)
     class_perfomance = models.CharField(max_length=20,choices= class_perfomancechoise)
-class attandence(models.Model):
+class attandence1(models.Model):
     teacher_id = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     date = models.DateField()
     present = models.BooleanField(default=False)
+    arrival_time = models.TimeField()
+    break_start = models.TimeField()
+    break_end = models.TimeField()
+    departure_time = models.TimeField()
+    
+    def get_totalworkinghours(self):
+        if None in(self.date, self.arrival_time, self.departure_time, self.break_start,self.break_end):
+            return HttpResponse("not valid")
+        arrival_time = datetime.combine(self.date,self.arrival_time)
+        break_start = datetime.combine(self.date,self.break_start)
+        break_end = datetime.combine(self.date,self.break_end)
+        departure_time = datetime.combine(self.date,self.departure_time)
+        working_hours = abs(departure_time-arrival_time)
+        total_brakinghours =abs(break_start -break_end)
+        total_workinghours = abs(working_hours-total_brakinghours)
+        
+        return total_workinghours.total_seconds()/3600
+    def total_breaking_hours(self):
+        if None in(self.date, self.break_start,self.break_end):
+            return HttpResponse("not valid")
+        
+        
+        break_start = datetime.combine(self.date,self.break_start)
+        break_end = datetime.combine(self.date,self.break_end)
+        total_brakinghours =abs(break_start-break_end)
+        return total_brakinghours.total_seconds()/3600
+        
     
