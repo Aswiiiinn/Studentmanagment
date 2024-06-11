@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student View</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 50px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .card {
+            margin-top: 20px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .notification-item, .reminder-item {
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .notification-item:last-child, .reminder-item:last-child {
+            border-bottom: none;
+        }
+        .notification-title, .reminder-title {
+            font-weight: bold;
+        }
+        .notification-date, .reminder-date {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        .reminder-days {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- User Information -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Student Information</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Course:</strong> {{ user.course.name }}</p>
+            <p><strong>Batch:</strong> {{ user.batch.name }}</p>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Notifications</h4>
+        </div>
+        <div class="card-body">
+            {% if noti %}
+                {% for notification in noti %}
+                    <div class="notification-item">
+                        <div class="notification-title">{{ notification.title }}</div>
+                        <div class="notification-date">{{ notification.created_at}}</div>
+                        <p>{{ notification.content }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No notifications available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Reminders -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Reminders</h4>
+        </div>
+        <div class="card-body">
+            {% if reminders %}
+                {% for reminder, days in reminders %}
+                    <div class="reminder-item">
+                        <div class="reminder-title">{{ reminder.title }}</div>
+                        <div class="reminder-date">{{ reminder.created}}</div>
+                        <p>{{ reminder.content }}</p>
+                        <p class="reminder-days">Expires in {{ days }} days</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No reminders available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -14,7 +14,7 @@ urlpatterns = [
     path('StudentLoginView/',StudentLoginView.as_view(), name = 'student_login'),
     path('otp_email/',otp_email.as_view(), name = 'otp_email'),
     path('otp_varification/',otp_verification.as_view(), name = 'otp_varification'),
-    
+     path('studentview/',studentview.as_view(), name = 'studentview'),
     
 
 

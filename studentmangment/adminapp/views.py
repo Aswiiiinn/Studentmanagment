@@ -1,3 +1,4 @@
+from datetime import date
 import random
 import string
 from turtle import right
@@ -206,6 +207,63 @@ class coursecomplitionreportpdf(View):
         p.showPage()
         p.save()
         return response
-class Announcement(View):
+class anouncementview(View):
+    def get(self,request):
+        date_1 = date.today()
+        item = announcment.objects.filter(expire_date__gte=date_1)
+        form = AnnouncementForm()
+        return render(request,'anouncement.html',{'item': item,'form':form})
+class Announcementedadd(View):
     def get(self, request):
-        return render(request,'announcement.html')
+        form = AnnouncementForm()
+        return render(request,'announcementedit.html',{'form': form})
+    def post(self, request):
+        form = AnnouncementForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('adminapp:anouncementview')
+        return render(request,'announcementedit.html',{'form': form})   
+class deleteannouncement(View):
+    def get(self,request ,pk):
+        item = announcment.objects.get(id=pk)
+        item.delete()
+        return redirect('adminapp:anouncementview')
+class anouncementview2(View):
+    def get(self,request):
+        date_1 = date.today()
+        item = announcment.objects.filter(expire_date__gte=date_1)
+        form = AnnouncementForm()
+        return render(request,'anouncementview2.html',{'item': item,'form':form})
+
+class addnotification(View):
+    def get(self, request):
+        form = notificationForm()
+        return render(request,'notificationedit.html',{'form': form})
+    def post(self, request):
+        form = notificationForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('adminapp:viewnotificatio')
+        return render(request,'notificationedit.html',{'form': form})
+class updatenotification(View):
+    def get(self, request,pk):
+        item = notifications.objects.get(id=pk)
+        form = notificationForm(instance=item)
+        return render(request,'notificationupdate.html',{'form': form})
+    def post(self,request,pk):
+        item = notifications.objects.get(id=pk)
+        form = notificationForm(request.POST,request.FILES,instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect('adminapp:notificationview')
+        return render(request,'notificationupdate.html',{'form': form})
+class deletenotification(View):
+    def get(self,request ,pk):
+        item = notifications.objects.get(id=pk)
+        item.delete()
+        return redirect('adminapp:notificationview')
+class viewnotificatio(View):
+    def get(self,request):
+        item = notifications.objects.all()
+        form = notificationForm()
+        return render(request,'viewnotificatio.html',{'form':form,'item':item})

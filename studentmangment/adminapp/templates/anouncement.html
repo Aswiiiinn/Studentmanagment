@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .announcement {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+            cursor: pointer;
+        }
+        .announcement:last-child {
+            border-bottom: none;
+        }
+        .announcement h2 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .announcement p {
+            margin: 0;
+            color: #555;
+        }
+        .details {
+            display: none;
+            margin-top: 10px;
+            color: #555;
+        }
+        .date {
+            color: #999;
+            font-size: 0.9em;
+        }
+        .expired {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% for item in item %}
+        <div class="announcement {% if item.expire_date < current_date %}expired{% endif %}">
+            <h2>{{ item.Headings }}</h2>
+            <p>{{ item.announcement_details }}</p>
+            <div class="details">
+                <p class="date">Created on: {{ item.created_date }}</p>
+                <p class="date">Expires on: {{ item.expire_date }}</p>
+            </div>
+        </div>
+        <a href="{% url 'adminapp:deleteannouncement' item.pk %}" > Delete </a>
+        {% endfor %}
+    </div>
+    <script>
+        document.querySelectorAll('.announcement').forEach(announcement => {
+            announcement.addEventListener('click', () => {
+                const details = announcement.querySelector('.details');
+                if (details.style.display === 'none' || details.style.display === '') {
+                    details.style.display = 'block';
+                } else {
+                    details.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

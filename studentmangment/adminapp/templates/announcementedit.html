@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <style>
+        button.delete {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .announcement {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+        }
+        .announcement h2 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .announcement p {
+            margin: 0;
+            color: #555;
+        }
+        .details {
+            margin-top: 10px;
+            color: #555;
+        }
+        .date {
+            color: #999;
+            font-size: 0.9em;
+        }
+        .expired {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <form method='post' action="{% url 'adminapp:Announcementedadd' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

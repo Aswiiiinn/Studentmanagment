@@ -1,10 +1,13 @@
+from datetime import date
 import random
 import string
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth import login,logout,authenticate
 
 from studentmangment import settings
+from adminapp.models import notifications
 from .models import Student, User,Teacher
 from django.core.mail import send_mail
 from django.http import  HttpResponse, HttpResponseBadRequest
@@ -157,11 +160,21 @@ class StudentLoginView(View):
         password = request.POST.get('password')
         student_email = request.POST.get('email')
         print(student_email, password ,username )
-        user = Student.objects.filter(username=username, password=password,email=student_email)
-        print(user)
-        if user :
-           return HttpResponse('SUCESSFUL')
-        else:
-            
-            return redirect('student_login')
-    
+        
+        user = Student.objects.get(username=username, password=password,email=student_email)
+        course = user.course
+        batch = user.batch
+        teacher = Teacher.objects.get(courses__name=course ,batches__name=batch)
+        noti = notifications.objects.filter(Q(teacher=teacher)|Q(teacher__isnull=True))
+        print(user) 
+        reminders = []
+        for notif in notifications:
+            days = int((notif.expiry_date - date.today()).days)
+            if 0 <= days <= 5:
+                reminders.append((notif, days))
+                print(reminders)
+                return redirect('studentview')
+            return render(request,'student_login.html',{'user':user, 'noti':notif, 'days':days})
+class studentview(View):
+    def get(self,request):
+        return render(request,'studentview.html')

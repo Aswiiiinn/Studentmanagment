@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .heading {
+            text-align: center;
+            font-size: 36px;
+            color: #4CAF50;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .announcement {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .announcement h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .announcement p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #666;
+        }
+
+        .announcement .details {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .announcement .details .date {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .announcement.expired {
+            background-color: #ffe6e6;
+            border-color: #ffcccc;
+        }
+
+        .announcement:hover {
+            background-color: #f9f9f9;
+            border-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">Announcements</div>
+        {% for item in item %}
+        <div class="announcement {% if item.expire_date < current_date %}expired{% endif %}" onclick="toggleDetails(this)">
+            <h2>{{ item.Headings }}</h2>
+            <p>{{ item.announcement_details }}</p>
+            <div class="details">
+                <p class="date">Created on: {{ item.created_date }}</p>
+                <p class="date">Expires on: {{ item.expire_date }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleDetails(element) {
+            const details = element.querySelector('.details');
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
