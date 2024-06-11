@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <form method="post" id="dropdownForm">
+        {% csrf_token %}
+        <label for="country">Country:</label>
+        <select id="country" name="country">
+            <option value="">Select Country</option>
+            {% for country in countries %}
+                <option value="{{ country.id }}">{{ country.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="state">State:</label>
+        <select id="state" name="state">
+            <option value="">Select State</option>
+        </select>
+
+        <label for="city">City:</label>
+        <select id="city" name="city">
+            <option value="">Select City</option>
+        </select>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            function updateDropdowns(url, data, targetDropdown) {
+                $.ajax({
+                    url: url,           // The URL to which the AJAX request is sent
+                    data: data,         // The data sent with the AJAX request
+                    success: function(response) {
+                        $(targetDropdown).empty();
+                        $(targetDropdown).append('<option value="">Select</option>');
+                        $.each(response, function(key, value) {
+                            $(targetDropdown).append('<option value="' + key + '">' + value + '</option>');
+                        });
+                    }
+                });
+            }
+
+            $('#country').change(function() {
+                var countryId = $(this).val();
+                if (countryId) {
+                    updateDropdowns("{% url 'load_states' %}", { 'country_id': countryId }, '#state');
+                } else {
+                    $('#state').empty();
+                    $('#city').empty();
+                }
+            });
+
+            $('#state').change(function() {
+                var stateId = $(this).val();
+                if (stateId) {
+                    updateDropdowns("{% url 'load_cities' %}", { 'state_id': stateId }, '#city');
+                } else {
+                    $('#city').empty();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

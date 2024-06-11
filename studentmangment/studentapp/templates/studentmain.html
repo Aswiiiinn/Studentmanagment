@@ -1,0 +1,116 @@
+{% load studytags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #007bff;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f0f0f0;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .reminders li {
+            background-color: #ffeb3b;
+        }
+        .teacher-info {
+            margin-bottom: 20px;
+        }
+        .teacher-info h3 {
+            margin: 5px 0;
+        }
+        .round-image {
+            border-radius: 50%;
+            height: 100px;
+            width: 100px;
+            object-fit: cover; /* Ensure the image covers the area */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ user_name }} Dashboard</h1>
+        <div class="section">
+            <h2>Student Information</h2>
+            {% if item.imagefile%}
+                <a href="{{ item.imagefile.url }}">
+                <img src="{{ item.imagefile.url }}" alt="Whatever" class="round-image">
+                 </a>
+                 <a href="{% url 'imageeditor' item.pk %}">Update</a>
+                 <a href="{% url 'imagedelete' item.pk %}">Delete</a>
+<                 
+            {% endif %}
+            <a href="{% url 'imageadder' %}">add</a>
+        
+            <p><strong>Student ID:</strong>STD000{{ user }}</p>
+            <p><strong>StudentName:</strong> {{ user_name }}</p>
+            <p><strong>Course:</strong> {{ course.name}}</p>
+            <p><strong>Batch:</strong> {{ batch.name}}</p>
+            <p><strong>Score:</strong> {{ score }}</p>
+            
+            <p><strong>Teacher:</strong> {% mat_name course.id batch.id %}</p>
+            
+
+        </div>
+        <div class="section">
+            </div>
+        <div class="section">
+            <h2>Notifications</h2>
+            <ul>
+                {% for notif in noti %}
+                <li>
+                    <p><strong>{{ notif.title }}</strong></p>
+                    <p>{{ notif.message }}</p>
+                    <p><em>Expires on: {{ notif.expire_date }}</em></p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Reminders</h2>
+            <ul class="reminders">
+                {% for reminder, days in reminders %}
+                <li>
+                    <p><strong>{{ reminder.title }}</strong></p>
+                    <p>{{ reminder.notification_details }}</p>
+                    <p><em>Expires in {{ days }} days</em></p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

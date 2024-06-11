@@ -127,5 +127,29 @@ class attandence1(models.Model):
         break_end = datetime.combine(self.date,self.break_end)
         total_brakinghours =abs(break_start-break_end)
         return total_brakinghours.total_seconds()/3600
-        
+class imageuploder1(models.Model):
+    Username = models.CharField(max_length=125, blank=True)
+    imagefile = models.ImageField(upload_to='image/',null=True,blank=True,default='img.png')
+    student_id = models.OneToOneField(Student,on_delete=models.CASCADE)   
+    
+class Country(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+class State( models.Model):
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+class City(models.Model):
+    state = models.ForeignKey(State, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+class student_detail(models.Model):
+    name = models.ForeignKey(Student, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country,on_delete=models.CASCADE)
+    state = models.ForeignKey(State,on_delete=models.CASCADE)
+    city = models.ForeignKey(City,on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
     

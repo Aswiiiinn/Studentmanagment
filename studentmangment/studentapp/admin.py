@@ -10,4 +10,5 @@ admin.site.register(Student)
 admin.site.register(Achivments)
 admin.site.register(attandence1)
 admin.site.register(importex,ImportExportModelAdmin)
+admin.site.register(imageuploder1)
 

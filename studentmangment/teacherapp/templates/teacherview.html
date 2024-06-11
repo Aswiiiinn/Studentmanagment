@@ -59,6 +59,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>Teacher ID </th>
                     <th>Name</th>
                     <th>Batches</th>
                     <th>Courses</th>
@@ -68,6 +69,7 @@
             <tbody>
                 {% for teacher in item %}
                 <tr>
+                    <td>TR000{{ teacher.id }}</td>
                     <td>{{ teacher.name }}</td>
                     <td>
                         <ul>

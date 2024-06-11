@@ -5,10 +5,10 @@ from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth import login,logout,authenticate
-
+from .forms import *
 from studentmangment import settings
 from adminapp.models import notifications
-from .models import Student, User,Teacher
+from .models import Batch, Course, Student, User,Teacher, imageuploder1
 from django.core.mail import send_mail
 from django.http import  HttpResponse, HttpResponseBadRequest
 
@@ -158,23 +158,117 @@ class StudentLoginView(View):
     def post(self, request):
         username = request.POST.get('username')
         password = request.POST.get('password')
-        student_email = request.POST.get('email')
-        print(student_email, password ,username )
+        user = Student.objects.get(username=username, password=password)
+        request.session['user_id'] = user.id
+        request.session['user_name'] = user.name
+        request.session['course'] = user.course.id
+        request.session['batch'] = user.batch.id
+        request.session['score'] = user.score
+        return redirect('studentview')
         
-        user = Student.objects.get(username=username, password=password,email=student_email)
-        course = user.course
-        batch = user.batch
-        teacher = Teacher.objects.get(courses__name=course ,batches__name=batch)
-        noti = notifications.objects.filter(Q(teacher=teacher)|Q(teacher__isnull=True))
+class studentview(View):
+    def get(self,request):
+        user1=request.session.get('user')
+        user = request.session.get('user_id')
+        batch_id= request.session.get('batch')
+        course_id = request.session.get('course')
+        score =  request.session.get('score')
+        user_name = (request.session.get('user_name','')).upper()   
+        batch = Batch.objects.get(id=batch_id)
+        course = Course.objects.get(id=course_id)
+        item = imageuploder1.objects.get(student_id=user)
+        teacher = Teacher.objects.filter(courses=course ,batches=batch)
+        for teacher in teacher:
+            print(f"Teacher: {teacher.name}")
+            print("Teacher's Courses:")
+            teacher_name = teacher.name
+            for c in teacher.courses.all():
+                print(c.name)
+            print("Teacher's Batches:")
+            for b in teacher.batches.all():
+                print(b.name)
+        
+        noti = notifications.objects.filter(
+                    Q(teacher_name_id=teacher.id) | Q(teacher_name__isnull=True))
         print(user) 
         reminders = []
-        for notif in notifications:
-            days = int((notif.expiry_date - date.today()).days)
+        for notif in noti:
+            days = int((notif.expire_date - date.today()).days)
             if 0 <= days <= 5:
                 reminders.append((notif, days))
                 print(reminders)
-                return redirect('studentview')
-            return render(request,'student_login.html',{'user':user, 'noti':notif, 'days':days})
-class studentview(View):
+                # return redirect('studentview')
+        return render(request,'studentmain.html',{'user1':user1,'user':user,'noti':noti,'reminders':reminders,'days':days,'score':score,'user_name':user_name,'course':course,'batch':batch,'item':item})
+    
+class imageviewer(View):
+    def get(self, request):
+        item = imageuploder1.objects.all()
+        froms = imageForm()
+        return render(request,'studentmain.html',{'item':item,'forms':froms})
+class imageadder(View):
     def get(self,request):
-        return render(request,'studentview.html')
+        form = imageForm()
+        return render(request,'imageadder.html',{'form':form})
+    def post(self,request):
+        form = imageForm(request.POST,request.FILES)
+        if form.is_valid():
+            forms.save()
+            return redirect('studentview')
+        return  render(request, 'imageadder.html',{'form':form})
+class imageeditor(View):
+    def get(self,request,pk):
+        item = imageuploder1.objects.get(id=pk)
+        form = imageForm(instance = item)
+        return render(request,'imageeditor.html',{'item':item,'form':form})
+    def post(self,request,pk):
+        item = imageuploder1.objects.get(id=pk)
+        form = imageForm(request.POST,request.FILES,instance = item)
+        if form.is_valid():
+            form.save()
+            return redirect('studentview')
+        return render(request,'imageeditor.html',{'item':item,'form':form})
+class imagedelete(View):
+    def get(self,request,pk):
+        item = imageuploder1.objects.get(id=pk)
+        item.delete()
+        return redirect('studentview')
+# class dropdadd(View):
+#     def get(self,request):
+#         form = dropdwonForm()
+#         return render(request,'dropdwon.html',{'form':form})
+#     def post(self,request):
+        
+#         form = dropdwonForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('dropdadd')
+#         return render(request,'dropdwon.html',{'form':form})
+# class updatedrop(View):
+#     def get(self,request,pk):
+#         item = student_detail.objects.get(id=pk)
+#         form =dropdwonForm(instance=item)
+#         return render(request,'updatedrop.html',{'form':form})
+#     def post(self,request,pk):
+#         item = student_detail.objects.get(id=pk)
+#         form = dropdwonForm(request.POST,instance=item)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('dropdadd')
+#         return render(request,'updatedrop.html',{'form':form})
+from django.http import JsonResponse
+
+
+def load_states(request):
+    country_id = request.GET.get('country_id')
+    states = State.objects.filter(country_id=country_id).order_by('name')
+    state_dict = {state.id: state.name for state in states}
+    return JsonResponse(state_dict)
+
+def load_cities(request):
+    state_id = request.GET.get('state_id')
+    cities = City.objects.filter(state_id=state_id).order_by('name')
+    city_dict = {city.id: city.name for city in cities}
+    return JsonResponse(city_dict)
+
+
+        
