@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_recaptcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,4 +150,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = '2001aswinp@gmail.com'
 EMAIL_HOST_PASSWORD = 'myxi jqwy xgra yzyx'
 #password associated with above email-
+RECAPTCHA_PUBLIC_KEY = '6LcNC_cpAAAAAP89KJIuY88vQbqIcGPc7jQK3482'
+RECAPTCHA_PRIVATE_KEY = '6LcNC_cpAAAAAEpzpt5sCAvLd-hkLrIKezel5MYa'
+RECAPTCHA_REQUIRED_SCORE = 0.85
 

@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 from .import views
+from .import *
 
 urlpatterns = [
 
@@ -18,6 +19,11 @@ urlpatterns = [
     path('imageadder/',imageadder.as_view(), name = 'imageadder'),
     path('imageeditor/<int:pk>',imageeditor.as_view(), name = 'imageeditor'),
     path('imagedelete/<int:pk>',imagedelete.as_view(), name = 'imagedelete'),
+    path('get-states/', GetStatesView.as_view(), name='get_states'),
+    path('get-cities/', GetCitiesView.as_view(), name='get_cities'),
+    path('student-detail/', StudentDetailView.as_view(), name='student_detail_view'),
+    path('student-detail/', StudentDetailView.as_view(), name='student_detail_view'),
+    # path('djangocaptchaView/', djangocaptchaView.as_view(), name='djangocaptchaView'),
     
 
 

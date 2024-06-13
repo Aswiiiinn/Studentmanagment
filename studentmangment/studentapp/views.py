@@ -1,6 +1,7 @@
 from datetime import date
 import random
 import string
+from django.http import JsonResponse
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views import View
@@ -101,8 +102,7 @@ class TeacherLoginView(View):
         print(teacher_email)
         user =Teacher.objects.filter(email= teacher_email,username=username,password=password).exists()
         print(user)
-        if user:  
-        
+        if user is not None:  
             return redirect('teacherapp:tchrdash')
         else:
            return HttpResponse('invalid')
@@ -153,7 +153,8 @@ class otp_verification(View):
 
 class StudentLoginView(View):
     def get(self, request):
-        return render(request, 'student_login.html')
+        form1 = FormWithCaptcha()
+        return render(request, 'student_login.html',{'form1':form1})
 
     def post(self, request):
         username = request.POST.get('username')
@@ -255,20 +256,28 @@ class imagedelete(View):
 #             form.save()
 #             return redirect('dropdadd')
 #         return render(request,'updatedrop.html',{'form':form})
-from django.http import JsonResponse
 
 
-def load_states(request):
-    country_id = request.GET.get('country_id')
-    states = State.objects.filter(country_id=country_id).order_by('name')
-    state_dict = {state.id: state.name for state in states}
-    return JsonResponse(state_dict)
 
-def load_cities(request):
-    state_id = request.GET.get('state_id')
-    cities = City.objects.filter(state_id=state_id).order_by('name')
-    city_dict = {city.id: city.name for city in cities}
-    return JsonResponse(city_dict)
+class GetStatesView(View):
+    def get(self, request):
+        country_id = request.GET.get('country_id')
+        states = State.objects.filter(country_id=country_id).values('id', 'name')
+        return JsonResponse(list(states), safe=False)
 
+class GetCitiesView(View):
+    def get(self, request):
+        state_id = request.GET.get('state_id')
+        cities = City.objects.filter(state_id=state_id).values('id', 'name')
+        return JsonResponse(list(cities), safe=False)
 
-        
+class StudentDetailView(View):
+    def get(self, request):
+        countries = Country.objects.all()
+        form = StudentDetailForm()
+        return render(request, 'ajaxtemp.html', {'countries': countries,'form': form})
+# class djangocaptchaView(View):
+#     def get(self, request):
+       
+#         print(form1)
+#         return render(request, 'student_login.html', {'form1': form1})

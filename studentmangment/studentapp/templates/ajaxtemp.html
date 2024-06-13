@@ -1,67 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dropdown Form</title>
+    <title>Student Detail</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 50px;
+        }
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-label {
+            margin-top: 10px;
+        }
+        .form-select, .form-control {
+            margin-bottom: 15px;
+        }
+        .form-select:disabled, .form-control:disabled {
+            background-color: #e9ecef;
+        }
+    </style>
 </head>
 <body>
-    <form method="post" id="dropdownForm">
-        {% csrf_token %}
-        <label for="country">Country:</label>
-        <select id="country" name="country">
-            <option value="">Select Country</option>
-            {% for country in countries %}
-                <option value="{{ country.id }}">{{ country.name }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="state">State:</label>
-        <select id="state" name="state">
-            <option value="">Select State</option>
-        </select>
-
-        <label for="city">City:</label>
-        <select id="city" name="city">
-            <option value="">Select City</option>
-        </select>
-
-        <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="mb-4">Student Detail Form</h2>
+            <form method="post" action="{% url 'student_detail_view' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_name" class="form-label">Name</label>
+                    {{ form.name }}
+                </div>
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country</label>
+                    <select id="country" name="country" class="form-select">
+                        <option value="">Select Country</option>
+                        {% for country in countries %}
+                            <option value="{{ country.id }}">{{ country.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="state" class="form-label">State</label>
+                    <select id="state" name="state" class="form-select" disabled>
+                        <option value="">Select State</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <select id="city" name="city" class="form-select" disabled>
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function() {
-            function updateDropdowns(url, data, targetDropdown) {
-                $.ajax({
-                    url: url,           // The URL to which the AJAX request is sent
-                    data: data,         // The data sent with the AJAX request
-                    success: function(response) {
-                        $(targetDropdown).empty();
-                        $(targetDropdown).append('<option value="">Select</option>');
-                        $.each(response, function(key, value) {
-                            $(targetDropdown).append('<option value="' + key + '">' + value + '</option>');
-                        });
-                    }
-                });
-            }
-
             $('#country').change(function() {
                 var countryId = $(this).val();
                 if (countryId) {
-                    updateDropdowns("{% url 'load_states' %}", { 'country_id': countryId }, '#state');
+                    $.ajax({
+                        url: "{% url 'get_states' %}",
+                        data: {
+                            'country_id': countryId
+                        },
+                        success: function(data) {
+                            var stateSelect = $('#state');
+                            stateSelect.empty().append('<option value="">Select State</option>');
+                            $.each(data, function(key, value) {
+                                stateSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                            });
+                            stateSelect.prop('disabled', false);
+                            $('#city').empty().append('<option value="">Select City</option>').prop('disabled', true);
+                        }
+                    });
                 } else {
-                    $('#state').empty();
-                    $('#city').empty();
+                    $('#state').empty().append('<option value="">Select State</option>').prop('disabled', true);
+                    $('#city').empty().append('<option value="">Select City</option>').prop('disabled', true);
                 }
             });
 
             $('#state').change(function() {
                 var stateId = $(this).val();
                 if (stateId) {
-                    updateDropdowns("{% url 'load_cities' %}", { 'state_id': stateId }, '#city');
+                    $.ajax({
+                        url: "{% url 'get_cities' %}",
+                        data: {
+                            'state_id': stateId
+                        },
+                        success: function(data) {
+                            var citySelect = $('#city');
+                            citySelect.empty().append('<option value="">Select City</option>');
+                            $.each(data, function(key, value) {
+                                citySelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                            });
+                            citySelect.prop('disabled', false);
+                        }
+                    });
                 } else {
-                    $('#city').empty();
+                    $('#city').empty().append('<option value="">Select City</option>').prop('disabled', true);
                 }
             });
         });
